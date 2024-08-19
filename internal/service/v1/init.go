@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/teyz/go-svc-template/internal/database"
 	pkg_cache "github.com/teyz/go-svc-template/pkg/cache"
 )
 
@@ -22,13 +21,11 @@ func generateExamplesCacheKey() string {
 }
 
 type service struct {
-	store database.Database
 	cache pkg_cache.Cache
 }
 
-func NewExampleStoreService(ctx context.Context, store database.Database, cache pkg_cache.Cache) (*service, error) {
+func NewExampleStoreService(ctx context.Context, cache pkg_cache.Cache) (*service, error) {
 	return &service{
-		store: store,
 		cache: cache,
 	}, nil
 }

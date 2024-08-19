@@ -7,14 +7,8 @@ services:
         dockerfile: Dockerfile.local
         context: .
       depends_on:
-        - go-resume-svc-db
         - go-resume-svc-redis
       environment:
-        - DB_USER=root
-        - DB_PASSWORD=root
-        - DB_NAME=go-resume-svc-db
-        - DB_HOST=go-resume-svc-db
-        - DB_PORT=5432
         - HTTP_SERVER_PORT=3003
         - CACHE_HOST=go-resume-svc-redis
         - CACHE_PORT=6379
@@ -29,11 +23,3 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
-  go-resume-svc-db:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: 'root'
-      POSTGRES_PASSWORD: 'root'
-      POSTGRES_DB: 'go-resume-svc-db'
-    ports:
-      - "5432:5432"
