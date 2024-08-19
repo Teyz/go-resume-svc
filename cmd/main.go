@@ -12,7 +12,6 @@ import (
 	"github.com/teyz/go-svc-template/internal/config"
 	handlers_http "github.com/teyz/go-svc-template/internal/handlers/http"
 	service_v1 "github.com/teyz/go-svc-template/internal/service/v1"
-	pkg_redis "github.com/teyz/go-svc-template/pkg/cache/redis"
 	pkg_config "github.com/teyz/go-svc-template/pkg/config"
 )
 
@@ -30,10 +29,7 @@ func main() {
 
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 
-	cacheConnection := pkg_redis.GetConnection(ctx, &cfg.RedisConfig)
-	cacheRedis := pkg_redis.NewRedisCache(ctx, cacheConnection)
-
-	exampleStoreService, err := service_v1.NewExampleStoreService(ctx, cacheRedis)
+	exampleStoreService, err := service_v1.NewExampleStoreService(ctx)
 	if err != nil {
 		log.Fatal().Err(err).
 			Msg("main: unable to create example store service")
