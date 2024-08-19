@@ -1,10 +1,12 @@
-# fly.toml app configuration file generated for go-resume-svc-holy-voice-8817 on 2024-08-19T21:27:05+02:00
+# fly.toml app configuration file generated for go-resume-svc on 2024-08-19T22:20:25+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'go-resume-svc-holy-voice-8817'
+app = 'go-resume-svc'
 primary_region = 'cdg'
+
+[build]
 
 [http_service]
   internal_port = 3003
