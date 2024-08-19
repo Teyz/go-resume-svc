@@ -10,7 +10,7 @@ import (
 
 	"github.com/teyz/go-svc-template/internal/handlers"
 	handlers_http_private_health_v1 "github.com/teyz/go-svc-template/internal/handlers/http/health/v1"
-	handlers_http_private_example_v1 "github.com/teyz/go-svc-template/internal/handlers/http/private/example/v1"
+	handlers_http_private_resume_v1 "github.com/teyz/go-svc-template/internal/handlers/http/private/resume/v1"
 	service_v1 "github.com/teyz/go-svc-template/internal/service/v1"
 	pkg_http "github.com/teyz/go-svc-template/pkg/http"
 )
@@ -18,10 +18,10 @@ import (
 type httpServer struct {
 	router  *echo.Echo
 	config  pkg_http.HTTPServerConfig
-	service service_v1.ExampleStoreService
+	service service_v1.ResumeStoreService
 }
 
-func NewServer(ctx context.Context, cfg pkg_http.HTTPServerConfig, service service_v1.ExampleStoreService) (handlers.Server, error) {
+func NewServer(ctx context.Context, cfg pkg_http.HTTPServerConfig, service service_v1.ResumeStoreService) (handlers.Server, error) {
 	return &httpServer{
 		router:  echo.New(),
 		config:  cfg,
@@ -35,7 +35,7 @@ func (s *httpServer) Setup(ctx context.Context) error {
 
 	// setup handlers
 	privateHealthV1Handlers := handlers_http_private_health_v1.NewHandler(ctx)
-	privateExampleV1Handlers := handlers_http_private_example_v1.NewHandler(ctx, s.service)
+	privateResumeV1Handlers := handlers_http_private_resume_v1.NewHandler(ctx, s.service)
 
 	// setup middlewares
 	s.router.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
@@ -62,10 +62,8 @@ func (s *httpServer) Setup(ctx context.Context) error {
 	privateV1 := s.router.Group("/private/v1")
 
 	// example endpoints
-	examplesV1 := privateV1.Group("/examples")
-	examplesV1.GET("", privateExampleV1Handlers.FetchExamples)
-	examplesV1.POST("", privateExampleV1Handlers.CreateExample)
-	examplesV1.GET("/:id", privateExampleV1Handlers.GetExampleByID)
+	resumeV1 := privateV1.Group("/resume")
+	resumeV1.GET("", privateResumeV1Handlers.GetResume)
 
 	return nil
 }
